@@ -1,20 +1,14 @@
 /*
- * Header-only format-able assert macros
+ * Header-only assert macros with format.
  *
  * Created May 21, 2020. leiless.
- * XXX: side-effect unsafe
+ * XXX: side-effect unsafe.
  *
- * Release under BSD-2-Clause license
+ * Released under BSD-2-Clause license.
  */
 
 #ifndef __ASSERTF_H
 #define __ASSERTF_H
-
-#include <assert.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <libgen.h>
 
 /**
  * Compile-time assertion  see: linux/arch/x86/boot/boot.h
@@ -27,10 +21,12 @@
  * some other compile-time-evaluated condition, you should use BUILD_BUG_ON to
  * detect if someone changes it.
  */
+#ifndef BUILD_BUG_ON
 #ifdef DEBUG
-#define BUILD_BUG_ON(cond)      ((void) sizeof(char[1 - 2*!!(cond)]))
+#define BUILD_BUG_ON(cond)      ((void) sizeof(char[1 - 2 * !!(cond)]))
 #else
 #define BUILD_BUG_ON(cond)      ((void) (cond))
+#endif
 #endif
 
 /* Macro taken from macOS/Frameworks/Kernel/sys/cdefs.h */
@@ -39,7 +35,20 @@
         __attribute__((__format__(__printf__, fmtarg, firstvararg)))
 #endif
 
-void __assertf0(int, const char *, ...) __printflike(2, 3);
+#ifndef ASSERTF_DISABLE
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+extern void __assertf0(int, const char *, ...) __printflike(2, 3);
+#ifdef __cplusplus
+}
+#endif
+
+#ifdef ASSERTF_IMPLEMENTATION
+#include <stdio.h>
+#include <stdarg.h>
+#include <stdlib.h>
 
 /**
  * Formatted version of assert()
@@ -50,35 +59,60 @@ void __assertf0(int, const char *, ...) __printflike(2, 3);
  */
 void __assertf0(int expr, const char *fmt, ...)
 {
-#ifndef NO_ASSERTF_H
-    int n;
-    va_list ap;
-
     if (!expr) {
+        va_list ap;
         va_start(ap, fmt);
-        n = vfprintf(stderr, fmt, ap);
-        assert(n > 0);  /* Should never fail! */
+        (void) vfprintf(stderr, fmt, ap);
         va_end(ap);
 
         abort();
     }
-#else
-    /* Supress unused-variable warnings */
-    (void) expr;
-    (void) fmt;
-#endif
 }
+#endif
+
+#include <libgen.h>
 
 #define assertf(e, fmt, ...)                                        \
     __assertf0(!!(e), "Assert (%s) failed: " fmt "  %s@%s()#%d\n",  \
                 #e, ##__VA_ARGS__, basename(__BASE_FILE__), __func__, __LINE__)
+#else
+#ifdef __cplusplus
+extern "C" {
+#endif
+/* see: https://stackoverflow.com/questions/29117836/attribute-const-vs-attribute-pure-in-gnu-c */
+int __vunused(void *, ...) __attribute__((const));
+#ifdef __cplusplus
+}
+#endif
 
-#define panicf(fmt, ...)            assertf(0, fmt, ##__VA_ARGS__)
+#ifdef ASSERTF_IMPLEMENTATION
+int __vunused(void *arg, ...)
+{
+    return arg != NULL;
+}
+#endif
+
+#define assertf(e, fmt, ...)        (void) __vunused((void *) (uintptr_t) (e), fmt, ##__VA_ARGS__)
+#endif
+
+#define panicf(fmt, ...)                    \
+    do {                                    \
+        assertf(0, fmt, ##__VA_ARGS__);     \
+        __builtin_unreachable();            \
+    } while (0)
+
 #define assert_nonnull(ptr)         assertf(ptr != NULL, "")
 #define assert_null(ptr)            assertf(ptr == NULL, "")
 
-#define __assert_cmp0(a, b, fs, op)                         \
-    assertf((a) op (b), "lhs: " fs " rhs: " fs,             \
+/*
+ * Taken from https://stackoverflow.com/a/2653351/13600780
+ * see: linux/include/linux/stringify.h
+ */
+#define __xstr0(x...)               #x
+#define __xstr(x...)                __xstr0(x)
+
+#define __assert_cmp0(a, b, fs, op)                                             \
+    assertf((a) op (typeof(a)) (b), "lhs: " __xstr(fs) " rhs: " __xstr(fs),     \
             (a), (typeof(a)) (b))
 
 /**
@@ -89,8 +123,8 @@ void __assertf0(int expr, const char *fmt, ...)
  * @param fmt   Additional format string
  * @param ...   Format string arguments
  */
-#define __assert_cmp1(a, b, fs, op, fmt, ...)               \
-    assertf((a) op (b), "lhs: " fs " rhs: " fs " - " fmt,   \
+#define __assert_cmp1(a, b, fs, op, fmt, ...)                                           \
+    assertf((a) op (typeof(a)) (b), "lhs: " __xstr(fs) " rhs: " __xstr(fs) "  " fmt,    \
             (a), (typeof(a)) (b), ##__VA_ARGS__)
 
 #define assert_eq(a, b, fs)             __assert_cmp0(a, b, fs, ==)
@@ -110,6 +144,15 @@ void __assertf0(int expr, const char *fmt, ...)
 
 #define assert_gt(a, b, fs)             __assert_cmp0(a, b, fs, >)
 #define assert_gtf(a, b, fs, fmt, ...)  __assert_cmp1(a, b, fs, >, fmt, ##__VA_ARGS__)
+
+#define assert_true(x, fs)              assert_ne(x, 0, fs)
+#define assert_truef(x, fs, fmt, ...)   assert_nef(x, 0, fs, fm, ##__VA_ARGS__)
+
+#define assert_false(x, fs)             assert_eq(x, 0, fs)
+#define assert_falsef(x, fs, fmt, ...)  assert_eqf(x, 0, fs, fm, ##__VA_ARGS__)
+
+#define assert_nonzero                  assert_true
+#define assert_zero                     assert_false
 
 #endif
 
