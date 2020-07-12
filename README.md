@@ -13,6 +13,8 @@ Linux | macOS | *BSD | Windows
 --- | --- | --- | ---
 Ready | Ready | Ready | N/A
 
+`assertf.h` originally targets to embedded systems, it can be used nearly all UNIX-like systems.
+
 ## Integration
 
 In order to deploy `assertf.h` to your existing C/C++ project, you need:
@@ -20,20 +22,53 @@ In order to deploy `assertf.h` to your existing C/C++ project, you need:
 1. Copy `assertf.h` to source code directory
 1. In **one** of your C/C++ file(typically project main file), write:
     ```c
-    #define ASSERTF_IMPLEMENTATION
+    #define ASSERTF_DEF_ONCE
     #include "assertf.h"
     ```
 1. If other C/C++ files needs to use `assertf.h`, just type `#include "assertf.h"`.
 
 ## API
 
-TODO
+Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
+
+* `assertf(expr, fmt, ...)`
+
+    When `expr` isn't true, it'll print out a message backed by `fmt` and `...` to `stderr` and then crash the whole program(if `assertf.h` is enabled).
+
+    Example:
+    ```shell script
+    $ cat test.c
+    #include <stdio.h>
+    #include <errno.h>
+    #include <unistd.h>
+
+    #define ASSERTF_DEF_ONCE
+    #include "assertf.h"
+
+    int main(void)
+    {
+        const char *path = "/tmp/.5a87aed5-df2d-4a12-947d-f2e5792acddc.sock";
+        int e = unlink(path);
+        assertf(e == 0, "unlink(2) fail  errno: %d", errno);
+        return 0;
+    }
+
+    $ gcc -Wall -Wextra test.c -otest && ./test
+    Assert (e == 0) failed: unlink(2) fail  errno: 2  test.c@main()#12
+    [1]    62760 abort (core dumped)  ./test
+    ```
+
+* `BUILD_BUG_ON()`
 
 ## Caveats
 
 * If you want to disable `assertf.h` on release build, please specify `-DASSERTF_DISABLE` on `Makefile`, `CMakeLists.txt`, etc.
 
-* Do **NOT** `#define ASSERTF_DISABLE` in any place of the source code, it'll break compilation semantics of `assertf.h`. Like aforementioned, define it in `Makefile`, etc.
+* Do **NOT** `#define ASSERTF_DISABLE` in any part of your source code, it'll break compilation semantics of `assertf.h`. Like aforementioned, define it in `Makefile`, etc.
+
+* Just like `#include <assert.h>`, all `assertf.h` APIs isn't side-effect safe.
+
+* Just like `#include <assert.h>`, when the `expr` not true, `abort(3)` will be called eventually.
 
 ## FAQ
 

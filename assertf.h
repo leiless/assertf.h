@@ -45,7 +45,7 @@ extern void __assertf0(int, const char *, ...) __printflike(2, 3);
 }
 #endif
 
-#ifdef ASSERTF_IMPLEMENTATION
+#ifdef ASSERTF_DEF_ONCE
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -85,7 +85,7 @@ int __vunused(void *, ...) __attribute__((const));
 }
 #endif
 
-#ifdef ASSERTF_IMPLEMENTATION
+#ifdef ASSERTF_DEF_ONCE
 int __vunused(void *arg, ...)
 {
     return arg != NULL;
