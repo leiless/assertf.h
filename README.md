@@ -92,6 +92,32 @@ TODO
 
 * Like `#include <assert.h>`, when the `expr` not true, `abort(3)` will be called eventually.
 
+## Pro tips
+
+* Do **NOT** misuse any assertion library, assertion is very useful in software development, many people rely on it heavily and some certainly misused it.
+
+    Use assertion to assure code quality isn't a decent way to solve the problem.
+
+    Most software have a very long life-time, sometimes keep running is better than simply crashed.
+
+    SEE ALSO: [Why does Go not have assertions?](https://golang.org/doc/faq#assertions)
+
+* Do **NOT** write side-effect unsafe code:
+
+    ```c
+    // When you -DASSERTF_DISABLE, lseek(2) may optimized out by the compiler.
+    assert_gt(lseek(fd, offset, SEEK_CUR), 0, %d);
+    ```
+
+    ```c
+    // The ++i will be evaluated twice when expanding assert_eq() macro
+    assert_eq(++i, n, %d);
+    ```
+
+* Use `assertf.h` heavily in your test code.
+
+* Replace `#include <assert.h>` with `#include "assertf.h"`. 😄
+
 ## FAQ
 
 * HOWTO check if `assertf.h` disabled on a certain build?
