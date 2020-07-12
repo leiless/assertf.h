@@ -17,9 +17,9 @@
  * BUILD_BUG_ON - break compile if a condition is true.
  * @cond: the condition which the compiler should know is false.
  *
- * If you have some code which relies on certain constants being equal, or
- * some other compile-time-evaluated condition, you should use BUILD_BUG_ON to
- * detect if someone changes it.
+ * If you have some code which relies on certain constants being true, or
+ * some other compile-time evaluated condition, you should use BUILD_BUG_ON() to
+ * detect if someone changes it unexpectedly.
  */
 #ifndef BUILD_BUG_ON
 #ifdef DEBUG

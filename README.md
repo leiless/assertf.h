@@ -80,7 +80,9 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
 
 * `BUILD_BUG_ON()`
 
-TODO
+    Break compile if a condition is true at compile-time, taken from Linux kernel. It's useful with companion of `assert*`.
+
+    If you have some code which relies on certain constants being true, or some other compile-time evaluated condition, you should use `BUILD_BUG_ON()` to detect if someone changes it unexpectedly.
 
 ## Caveats
 
@@ -111,6 +113,7 @@ TODO
 
     ```c
     // The ++i will be evaluated twice when expanding assert_eq() macro
+    // Again, -DASSERTF_DISABLE may cause ++i optimized out by the compiler
     assert_eq(++i, n, %d);
     ```
 
