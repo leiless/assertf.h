@@ -35,40 +35,62 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
 
     When `expr` isn't true, it'll print out a message backed by `fmt` and `...` to `stderr` and then crash the whole program(if `assertf.h` is enabled).
 
-    Example:
-    ```shell script
-    $ cat test.c
-    #include <stdio.h>
-    #include <errno.h>
-    #include <unistd.h>
-
-    #define ASSERTF_DEF_ONCE
-    #include "assertf.h"
-
-    int main(void)
-    {
-        const char *path = "/tmp/.5a87aed5-df2d-4a12-947d-f2e5792acddc.sock";
-        int e = unlink(path);
-        assertf(e == 0, "unlink(2) fail  errno: %d", errno);
-        return 0;
-    }
-
-    $ gcc -Wall -Wextra test.c -otest && ./test
+    Sample output:
+    ```
+    // assertf(e == 0, "unlink(2) fail  errno: %d", errno);
     Assert (e == 0) failed: unlink(2) fail  errno: 2  test.c@main()#12
     [1]    62760 abort (core dumped)  ./test
     ```
 
+* `panicf(fmt, ...)`
+
+    Alias call of `assertf(0, fmt, ...)`.
+
+* `assert_nonnull(ptr)`, `assert_null(ptr)`
+
+    Assert nullability of `ptr`.
+
+* `assert_eq(a, b, fs)`, `assert_ne()`, `assert_lt()`, `assert_le()`, `assert_gt()`, `assert_ge()`
+
+    Check arithmetic relation of `a` and `b`, `fs` is the format specifier of `a`, `b` will use the same format specifier as `a`, double-quote in `"%<type_specifier>"` can be omitted.
+
+    ```
+    // assert_eq(e, 0, %d);
+    Assert ((e) == (typeof(e)) (0)) failed: lhs: -1 rhs: 0  test.c@main()#13
+    [1]    65959 abort (core dumped)  ./test
+    ```
+
+* `assert_eqf(a, b, fs, fmt, ...)`, `assert_nef()`, `assert_ltf()`, `assert_lef()`, `assert_gtf()`, `assert_gef()`
+
+    Like above version, `fmt` and `...` can used for verbose assertion output once it failed.
+
+    ```
+    // assert_eqf(e, 0, %d, "unlink(2) fail  errno: %d", errno);
+    Assert ((e) == (typeof(e)) (0)) failed: lhs: -1 rhs: 0  unlink(2) fail  errno: 2  test.c@main()#14
+    [1]    66800 abort (core dumped)  ./test
+    ```
+
+* `assert_true(x, fs)`, `assert_truef(x, fs, fmt, ...)`, `assert_false()`, `assert_falsef()`
+
+    Alias call of `assert_ne(x, 0, fs, ...)`, `assert_eq(x, 0, fs, ...)`.
+
+* `assert_nonzero(x, fs)`, `assert_zero(x, fs)`
+
+    Alias call of `assert_true(x, fs)`, `assert_false(x, fs)`.
+
 * `BUILD_BUG_ON()`
+
+TODO
 
 ## Caveats
 
 * If you want to disable `assertf.h` on release build, please specify `-DASSERTF_DISABLE` on `Makefile`, `CMakeLists.txt`, etc.
 
-* Do **NOT** `#define ASSERTF_DISABLE` in any place of the source code, it'll break compilation semantics of `assertf.h`. Like aforementioned, define it in `Makefile`, etc.
+* Do **NOT** `#define ASSERTF_DISABLE` in any part of your project source code, it'll break compilation semantics of `assertf.h`. Like aforementioned, define it in `Makefile`, etc.
 
-* Just like `#include <assert.h>`, all `assertf.h` APIs isn't side-effect safe.
+* Like `#include <assert.h>`, all `assertf.h` APIs **isn't** side-effect safe.
 
-* Just like `#include <assert.h>`, when the `expr` not true, `abort(3)` will be called eventually.
+* Like `#include <assert.h>`, when the `expr` not true, `abort(3)` will be called eventually.
 
 ## FAQ
 
