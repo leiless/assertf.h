@@ -64,7 +64,7 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
 
 * If you want to disable `assertf.h` on release build, please specify `-DASSERTF_DISABLE` on `Makefile`, `CMakeLists.txt`, etc.
 
-* Do **NOT** `#define ASSERTF_DISABLE` in any part of your source code, it'll break compilation semantics of `assertf.h`. Like aforementioned, define it in `Makefile`, etc.
+* Do **NOT** `#define ASSERTF_DISABLE` in any place of the source code, it'll break compilation semantics of `assertf.h`. Like aforementioned, define it in `Makefile`, etc.
 
 * Just like `#include <assert.h>`, all `assertf.h` APIs isn't side-effect safe.
 
@@ -81,3 +81,4 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
     ```
 
     If you see `__assertf0`, it means `assertf.h` is enabled in `some_binary`.
+
