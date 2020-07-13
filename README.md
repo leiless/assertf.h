@@ -17,15 +17,17 @@ With enhanced assertions, we can debug/test code better.
 
 In order to deploy `assertf.h` to your existing C/C++ project, you need:
 
-1. Copy `assertf.h` to source code directory
+1. Download [`assertf.h`](https://raw.githubusercontent.com/leiless/assertf.h/master/assertf.h) to your source code directory
+
 1. In **one** of your C/C++ file(typically project main file), write:
     ```c
     #define ASSERTF_DEF_ONCE
     #include "assertf.h"
     ```
+
 1. If other C/C++ files needs to use `assertf.h`, just type `#include "assertf.h"`.
 
-1. If you want to disable `assertf.h` on release build, please specify `-DASSERTF_DISABLE` on `Makefile`, `CMakeLists.txt`, etc.
+1. If you want to disable `assertf.h` on release build, please specify `-DASSERTF_DISABLE` in `Makefile`, `CMakeLists.txt`, etc.
 
 ## API
 
@@ -37,8 +39,8 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
 
     Sample output:
     ```
-    // assertf(e == 0, "unlink(2) fail  errno: %d", errno);
-    Assert (e == 0) failed: unlink(2) fail  errno: 2  test.c@main()#12
+    // assertf(e == 0, "unlink(2) errno: %d", errno);
+    Assert (e == 0) failed: unlink(2) errno: 2  test.c@main()#12
     [1]    62760 abort (core dumped)  ./test
     ```
 
@@ -65,8 +67,8 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
     Like above version, `fmt` and `...` can used for verbose assertion output once it failed.
 
     ```
-    // assert_eqf(e, 0, %d, "unlink(2) fail  errno: %d", errno);
-    Assert ((e) == (typeof(e)) (0)) failed: lhs: -1 rhs: 0  unlink(2) fail  errno: 2  test.c@main()#14
+    // assert_eqf(e, 0, %d, "unlink(2) errno: %d", errno);
+    Assert ((e) == (typeof(e)) (0)) failed: lhs: -1 rhs: 0  unlink(2) errno: 2  test.c@main()#14
     [1]    66800 abort (core dumped)  ./test
     ```
 
@@ -90,7 +92,7 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
 
 * Like `#include <assert.h>`, all `assertf.h` APIs **isn't** side-effect safe.
 
-* Like `#include <assert.h>`, when the `expr` not true, `abort(3)` will be called eventually.
+* Like `#include <assert.h>`, when the `expr` not true, [`abort(3)`](https://man7.org/linux/man-pages/man3/abort.3.html) will be called eventually.
 
 ## Pro tips
 
