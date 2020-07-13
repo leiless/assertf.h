@@ -1,8 +1,14 @@
 /*
- * Header-only assert macros with format.
+ * C header-only formattable assert macros.
  *
  * Created May 21, 2020. leiless.
  * XXX: side-effect unsafe.
+ *
+ * Usage:
+ *  #define ASSERTF_DEF_ONCE
+ *  #include "assertf.h"
+ *
+ *  -DASSERTF_DISABLE in Makefile to disable assertf.h
  *
  * Released under BSD-2-Clause license.
  */

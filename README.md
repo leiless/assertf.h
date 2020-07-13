@@ -1,6 +1,6 @@
 # assertf.h
 
-[![](https://img.shields.io/github/license/leiless/assertf.h)](https://img.shields.io/github/license/leiless/assertf.h)
+[![License](https://img.shields.io/github/license/leiless/assertf.h)](LICENSE)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5ea731ec4ced42a59cb902012fdfa7b9)](https://www.codacy.com/manual/leiless/assertf.h?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=leiless/assertf.h&amp;utm_campaign=Badge_Grade)
 
 `assertf.h` is a formattable assert macros library, a possible alternative to the `#include <assert.h>`.
@@ -9,9 +9,7 @@ With enhanced assertions, we can debug/test code better.
 
 ## Platform
 
-Linux | macOS | *BSD | Windows
---- | --- | --- | ---
-Ready | Ready | Ready | N/A
+![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20*BSD-brightgreen.svg)
 
 `assertf.h` originally targets to embedded systems, it can be used nearly all UNIX-like systems.
 
@@ -26,6 +24,8 @@ In order to deploy `assertf.h` to your existing C/C++ project, you need:
     #include "assertf.h"
     ```
 1. If other C/C++ files needs to use `assertf.h`, just type `#include "assertf.h"`.
+
+1. If you want to disable `assertf.h` on release build, please specify `-DASSERTF_DISABLE` on `Makefile`, `CMakeLists.txt`, etc.
 
 ## API
 
@@ -85,8 +85,6 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
     If you have some code which relies on certain constants being true, or some other compile-time evaluated condition, you should use `BUILD_BUG_ON()` to detect if someone changes it unexpectedly.
 
 ## Caveats
-
-* If you want to disable `assertf.h` on release build, please specify `-DASSERTF_DISABLE` on `Makefile`, `CMakeLists.txt`, etc.
 
 * Do **NOT** `#define ASSERTF_DISABLE` in any part of your project source code, it'll break compilation semantics of `assertf.h`. Like aforementioned, define it in `Makefile`, etc.
 
