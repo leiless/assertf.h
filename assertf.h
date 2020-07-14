@@ -113,6 +113,7 @@ int __vunused(void *arg, ...)
 }
 #endif
 
+#include <stdint.h>
 #define assertf(e, fmt, ...)        (void) __vunused((void *) (uintptr_t) (e), fmt, ##__VA_ARGS__)
 #endif
 
