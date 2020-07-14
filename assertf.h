@@ -76,11 +76,26 @@ void __assertf0(int expr, const char *fmt, ...)
 }
 #endif
 
-#include <libgen.h>
+#include <string.h>
+
+/**
+ * basename(3) have inconsistent implementation across UNIX-like systems.
+ * Besides, Windows doesn't have such API.
+ */
+const char * __basename0(const char *path)
+{
+    char *p;
+#ifdef _WIN32
+    p = strrchr(path, '\\');
+#else
+    p = strrchr(path, '/');
+#endif
+    return p != NULL ? p + 1 : path;
+}
 
 #define assertf(e, fmt, ...)                                        \
     __assertf0(!!(e), "Assert (%s) failed: " fmt "  %s@%s()#%d\n",  \
-                #e, ##__VA_ARGS__, basename(__BASE_FILE__), __func__, __LINE__)
+                #e, ##__VA_ARGS__, __basename0(__BASE_FILE__), __func__, __LINE__)
 #else
 #ifdef __cplusplus
 extern "C" {
