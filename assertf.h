@@ -35,18 +35,36 @@
 #endif
 #endif
 
+/* see: https://stackoverflow.com/a/6849629 */
+#ifdef _WIN32
+#if _MSC_VER >= 1400
+#include <sal.h>
+#if _MSC_VER > 1400
+#define __printflike(p) _Printf_format_string_ p
+#else
+#define __printflike(p) __format_string p
+#endif /* __printflike */
+#else
+#define __printflike(p) p
+#endif /* _MSC_VER */
+#else
 /* Macro taken from macOS/Frameworks/Kernel/sys/cdefs.h */
 #ifndef __printflike
 #define __printflike(fmtarg, firstvararg) \
         __attribute__((__format__(__printf__, fmtarg, firstvararg)))
 #endif
+#endif  /* _WIN32 */
 
 #ifndef ASSERTF_DISABLE
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+#ifdef _WIN32
+extern void __assertf0(int, __printflike(const char *), ...);
+#else
 extern void __assertf0(int, const char *, ...) __printflike(2, 3);
+#endif
 #ifdef __cplusplus
 }
 #endif
@@ -63,7 +81,11 @@ extern void __assertf0(int, const char *, ...) __printflike(2, 3);
  * @param fmt   Format string when assertion failed
  * @param ...   Format string arguments
  */
+#ifdef _WIN32
+void __assertf0(int expr, __printflike(const char *fmt), ...)
+#else
 void __assertf0(int expr, const char *fmt, ...)
+#endif
 {
     if (!expr) {
         va_list ap;
@@ -84,7 +106,7 @@ void __assertf0(int expr, const char *fmt, ...)
  */
 const char * __basename0(const char *path)
 {
-    char *p;
+    const char *p;
 #ifdef _WIN32
     p = strrchr(path, '\\');
 #else
@@ -93,9 +115,15 @@ const char * __basename0(const char *path)
     return p != NULL ? p + 1 : path;
 }
 
+#ifdef _WIN32
+#define __FILE0__       __FILE__
+#else
+#define __FILE0__       __BASE_FILE__
+#endif
+
 #define assertf(e, fmt, ...)                                        \
     __assertf0(!!(e), "Assert (%s) failed: " fmt "  %s@%s()#%d\n",  \
-                #e, ##__VA_ARGS__, __basename0(__BASE_FILE__), __func__, __LINE__)
+                #e, ##__VA_ARGS__, __basename0(__FILE0__), __func__, __LINE__)
 #else
 #ifdef __cplusplus
 extern "C" {
@@ -130,12 +158,17 @@ int __vunused(void *arg, ...)
  * Taken from https://stackoverflow.com/a/2653351/13600780
  * see: linux/include/linux/stringify.h
  */
-#define __xstr0(x...)               #x
-#define __xstr(x...)                __xstr0(x)
+#define __xstr0(x)                  #x
+#define __xstr(x)                   __xstr0(x)
 
+#ifdef _WIN32
+#define __assert_cmp0(a, b, fs, op)                                             \
+    assertf((a) op (b), "lhs: " __xstr(fs) " rhs: " __xstr(fs), (a), (b))
+#else
 #define __assert_cmp0(a, b, fs, op)                                             \
     assertf((a) op (typeof(a)) (b), "lhs: " __xstr(fs) " rhs: " __xstr(fs),     \
             (a), (typeof(a)) (b))
+#endif
 
 /**
  * @param a     Left hand side
@@ -145,9 +178,14 @@ int __vunused(void *arg, ...)
  * @param fmt   Additional format string
  * @param ...   Format string arguments
  */
+#ifdef _WIN32
+#define __assert_cmp1(a, b, fs, op, fmt, ...)                                   \
+    assertf((a) op (b), "lhs: " __xstr(fs) " rhs: " __xstr(fs) "  " fmt, (a), (b), ##__VA_ARGS__)
+#else
 #define __assert_cmp1(a, b, fs, op, fmt, ...)                                           \
     assertf((a) op (typeof(a)) (b), "lhs: " __xstr(fs) " rhs: " __xstr(fs) "  " fmt,    \
             (a), (typeof(a)) (b), ##__VA_ARGS__)
+#endif
 
 #define assert_eq(a, b, fs)             __assert_cmp0(a, b, fs, ==)
 #define assert_eqf(a, b, fs, fmt, ...)  __assert_cmp1(a, b, fs, ==, fmt, ##__VA_ARGS__)
