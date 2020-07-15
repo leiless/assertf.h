@@ -145,10 +145,16 @@ int __vunused(void *arg, ...)
 #define assertf(e, fmt, ...)        (void) __vunused((void *) (uintptr_t) (e), fmt, ##__VA_ARGS__)
 #endif
 
+#ifdef _WIN32
+#define __unreachable()     __assume(0)
+#else
+#define __unreachable()     __builtin_unreachable()
+#endif
+
 #define panicf(fmt, ...)                    \
     do {                                    \
         assertf(0, fmt, ##__VA_ARGS__);     \
-        __builtin_unreachable();            \
+        __unreachable();                    \
     } while (0)
 
 #define assert_nonnull(ptr)         assertf(ptr != NULL, "")
