@@ -9,9 +9,9 @@ With enhanced assertions, we can debug/test code better.
 
 ## Platform
 
-![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20*BSD-brightgreen.svg)
+![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20Windows%20%7C%20macOS%20%7C%20*BSD-brightgreen.svg)
 
-`assertf.h` originally targets to embedded systems, it can be used nearly all UNIX-like systems.
+`assertf.h` originally targets to embedded systems, it can be used nearly all UNIX-like, Windows systems.
 
 ## Integration
 
@@ -29,7 +29,7 @@ In order to deploy `assertf.h` to your existing C/C++ project, you need:
 
 1. If you want to disable `assertf.h` on release build, please specify `-DASSERTF_DISABLE` in `Makefile`, `CMakeLists.txt`, etc.
 
-## API
+## APIs
 
 Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
 
@@ -119,17 +119,22 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
 
 * Use `assertf.h` heavily in your test code.
 
-* Replace `#include <assert.h>` with `#include "assertf.h"`. 😄
+* Replace `#include <assert.h>` with `#include "assertf.h"`. 😌
 
 ## FAQ
 
 * HOWTO check if `assertf.h` disabled on a certain build?
 
     - UNIX-like systems
-    ```shell script
+
+    ```shell
     $ nm some_binary | grep assertf
     0000000000007709 T __assertf0
     ```
+
+    - Windows
+
+    **TODO**
 
     If you see `__assertf0`, it means `assertf.h` is enabled in `some_binary`.
 
