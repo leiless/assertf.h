@@ -10,6 +10,7 @@
  *
  *  -DASSERTF_DISABLE in Makefile to disable assertf.h
  *
+ * For more usage, check out README.md
  * Released under BSD-2-Clause license.
  */
 
@@ -128,8 +129,16 @@ const char * __basename0(const char *path)
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* see: https://stackoverflow.com/questions/29117836/attribute-const-vs-attribute-pure-in-gnu-c */
+/*
+ * see:
+ *  https://stackoverflow.com/questions/29117836/attribute-const-vs-attribute-pure-in-gnu-c
+ *  https://stackoverflow.com/questions/2798188/pure-const-function-attributes-in-different-compilers
+ */
+#ifdef _WIN32
+int __vunused(void *, ...);
+#else
 int __vunused(void *, ...) __attribute__((const));
+#endif
 #ifdef __cplusplus
 }
 #endif
