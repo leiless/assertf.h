@@ -66,6 +66,7 @@ extern void __assertf0(int, __printflike(const char *), ...);
 #else
 extern void __assertf0(int, const char *, ...) __printflike(2, 3);
 #endif
+const char * __basename0(const char *);
 #ifdef __cplusplus
 }
 #endif
@@ -97,7 +98,6 @@ void __assertf0(int expr, const char *fmt, ...)
         abort();
     }
 }
-#endif
 
 #include <string.h>
 
@@ -115,6 +115,7 @@ const char * __basename0(const char *path)
 #endif
     return p != NULL ? p + 1 : path;
 }
+#endif
 
 #ifdef _WIN32
 #define __FILE0__       __FILE__
