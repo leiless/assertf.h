@@ -177,13 +177,22 @@ int __vunused(void *arg, ...)
 #define __xstr0(x)                  #x
 #define __xstr(x)                   __xstr0(x)
 
+/*
+ * see: https://stackoverflow.com/questions/14130774/difference-between-decltype-and-typeof
+ */
+#ifdef __cplusplus
+#define __type0                     decltype
+#else
+#define __type0                     typeof
+#endif
+
 #ifdef _WIN32
 #define __assert_cmp0(a, b, fs, op)                                             \
     assertf((a) op (b), "lhs: " __xstr(fs) " rhs: " __xstr(fs), (a), (b))
 #else
 #define __assert_cmp0(a, b, fs, op)                                             \
-    assertf((a) op (typeof(a)) (b), "lhs: " __xstr(fs) " rhs: " __xstr(fs),     \
-            (a), (typeof(a)) (b))
+    assertf((a) op (__type0(a)) (b), "lhs: " __xstr(fs) " rhs: " __xstr(fs),    \
+            (a), (__type0(a)) (b))
 #endif
 
 /**
@@ -199,8 +208,8 @@ int __vunused(void *arg, ...)
     assertf((a) op (b), "lhs: " __xstr(fs) " rhs: " __xstr(fs) "  " fmt, (a), (b), ##__VA_ARGS__)
 #else
 #define __assert_cmp1(a, b, fs, op, fmt, ...)                                           \
-    assertf((a) op (typeof(a)) (b), "lhs: " __xstr(fs) " rhs: " __xstr(fs) "  " fmt,    \
-            (a), (typeof(a)) (b), ##__VA_ARGS__)
+    assertf((a) op (__type0(a)) (b), "lhs: " __xstr(fs) " rhs: " __xstr(fs) "  " fmt,   \
+            (a), (__type0(a)) (b), ##__VA_ARGS__)
 #endif
 
 #define assert_eq(a, b, fs)             __assert_cmp0(a, b, fs, ==)
