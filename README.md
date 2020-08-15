@@ -1,6 +1,6 @@
 # assertf.h
 
-[![License](https://img.shields.io/github/license/leiless/assertf.h)](LICENSE)
+[![License](https://img.shields.io/badge/License-BSD--2--Clause-blue)](LICENSE)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5ea731ec4ced42a59cb902012fdfa7b9)](https://www.codacy.com/manual/leiless/assertf.h?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=leiless/assertf.h&amp;utm_campaign=Badge_Grade)
 
 `assertf.h` is a formattable assert macros library, a possible alternative to the `#include <assert.h>`.
