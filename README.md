@@ -10,7 +10,7 @@ With enhanced assertions, we can debug/test code better.
 
 ## Platform
 
-![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20Windows%20%7C%20macOS%20%7C%20*BSD-brightgreen.svg)
+![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20Windows%20%7C%20macOS%20%7C%20*BSD-e65c00.svg)
 
 `assertf.h` originally targets to embedded systems, it also can be used nearly all UNIX-like, including Windows systems.
 
