@@ -124,8 +124,8 @@ const char * x_bname_dfc95d52(const char *path)
 #endif
 
 #define assertf(e, fmt, ...)                                                    \
-    x_assertf_c21162d2(!!(e), "Assert (%s) failed: " fmt "  %s@%s()#%d\n",      \
-        #e, ##__VA_ARGS__, x_bname_dfc95d52(__FILE0__), __func__, __LINE__)
+    x_assertf_c21162d2(!!(e), "Assert (%s) failed: " fmt " [%s:%d (%s)]\n",     \
+        #e, ##__VA_ARGS__, x_bname_dfc95d52(__FILE0__), __LINE__, __func__)
 #else
 #ifdef __cplusplus
 extern "C" {

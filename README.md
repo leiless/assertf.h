@@ -29,7 +29,7 @@ In order to deploy `assertf.h` to your existing C/C++ project, you need:
 
 1. If you want to disable `assertf.h` on release build, please specify `-DASSERTF_DISABLE` in `Makefile`, `CMakeLists.txt`, etc.
 
-## APIs
+## API
 
 Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
 
@@ -40,7 +40,7 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
     Sample output:
     ```c
     // assertf(e == 0, "unlink(2) errno: %d", errno);
-    Assert (e == 0) failed: unlink(2) errno: 2  test.c@main()#12
+    Assert (e == 0) failed: unlink(2) errno: 2 [test.c:12 (main)]
     [1]    62760 abort (core dumped)  ./test
     ```
 
@@ -58,7 +58,7 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
 
     ```c
     // assert_eq(e, 0, %d);
-    Assert ((e) == (typeof(e)) (0)) failed: lhs: -1 rhs: 0  test.c@main()#13
+    Assert ((e) == (__type0(e)) (0)) failed: lhs: -1 rhs: 0 [test.c:13 (main)]
     [1]    65959 abort (core dumped)  ./test
     ```
 
@@ -68,7 +68,7 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
 
     ```c
     // assert_eqf(e, 0, %d, "unlink(2) errno: %d", errno);
-    Assert ((e) == (typeof(e)) (0)) failed: lhs: -1 rhs: 0  unlink(2) errno: 2  test.c@main()#14
+    Assert ((e) == (__type0(e)) (0)) failed: lhs: -1 rhs: 0  unlink(2) errno: 2 [test.c:14 (main)]
     [1]    66800 abort (core dumped)  ./test
     ```
 
@@ -134,7 +134,7 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
 
     - Windows
 
-        You need have to check the `pdf`([Program database](https://en.wikipedia.org/wiki/Program_database)) file.
+        You need have to check the `pdb`([Program database](https://en.wikipedia.org/wiki/Program_database)) file.
 
     If you see `x_assertf_c21162d2`, it means `assertf.h` is enabled in `some_binary`.
 

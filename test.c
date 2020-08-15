@@ -12,5 +12,8 @@ int main(void)
     assert_eq(1, 1, %d);
     assert_null(NULL);
     assert_nonnull(main);
+    assert_true(1, %d);
+    assert_true(-1, %d);
+    assert_false(0, %d);
     return 0;
 }
