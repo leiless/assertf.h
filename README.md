@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/License-BSD--2--Clause-blue)](LICENSE)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5ea731ec4ced42a59cb902012fdfa7b9)](https://www.codacy.com/manual/leiless/assertf.h?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=leiless/assertf.h&amp;utm_campaign=Badge_Grade)
 
-`assertf.h` is a formattable assert macros library, a possible alternative to the `#include <assert.h>`.
+[`assertf.h`](assertf.h) is a header-only formattable assert macros library, a possible alternative to the `#include <assert.h>`.
 
 With enhanced assertions, we can debug/test code better.
 
@@ -11,7 +11,7 @@ With enhanced assertions, we can debug/test code better.
 
 ![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20Windows%20%7C%20macOS%20%7C%20*BSD-brightgreen.svg)
 
-`assertf.h` originally targets to embedded systems, it can be used nearly all UNIX-like, Windows systems.
+`assertf.h` originally targets to embedded systems, it also can be used nearly all UNIX-like, including Windows systems.
 
 ## Integration
 
@@ -21,6 +21,7 @@ In order to deploy `assertf.h` to your existing C/C++ project, you need:
 
 1. In **one** of your C/C++ file(typically project main file), write:
     ```c
+    // Define ASSERTF_DEF_ONCE once and only once
     #define ASSERTF_DEF_ONCE
     #include "assertf.h"
     ```
@@ -88,7 +89,7 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
 
 ## Caveats
 
-* Do **NOT** `#define ASSERTF_DISABLE` in any part of your project source code, it'll break compilation semantics of `assertf.h`. Like aforementioned, define it in `Makefile`, etc.
+* Do **NOT** `#define ASSERTF_DISABLE` in any part of your project source code, it'll break compilation semantics of `assertf.h`. Like aforementioned, define it in `Makefile`, `CMakeLists.txt`, etc.
 
 * Like `#include <assert.h>`, all `assertf.h` APIs **isn't** side-effect safe.
 
@@ -117,7 +118,7 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
     assert_eq(++i, n, %d);
     ```
 
-* Use `assertf.h` heavily in your test code.
+* Use `assertf.h` heavily and confidently in your code base.
 
 * Replace `#include <assert.h>` with `#include "assertf.h"`. 😌
 
