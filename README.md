@@ -1,7 +1,8 @@
 # assertf.h
 
-[![License](https://img.shields.io/badge/License-BSD--2--Clause-blue)](LICENSE)
+[![Try it online](https://img.shields.io/badge/try-online-d24dff.svg)](https://repl.it/@leiless/assertfh-demo)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/5ea731ec4ced42a59cb902012fdfa7b9)](https://www.codacy.com/manual/leiless/assertf.h?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=leiless/assertf.h&amp;utm_campaign=Badge_Grade)
+[![License](https://img.shields.io/badge/license-BSD--2--Clause-blue)](LICENSE)
 
 [`assertf.h`](assertf.h) is a header-only formattable assert macros library, a possible alternative to the `#include <assert.h>`.
 
@@ -94,6 +95,8 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
 * Like `#include <assert.h>`, all `assertf.h` APIs **isn't** side-effect safe.
 
 * Like `#include <assert.h>`, when the `expr` not true, [`abort(3)`](https://man7.org/linux/man-pages/man3/abort.3.html) will be called eventually.
+
+* Some C/C++ compilers may warns you `implicit declaration of function 'typeof' is invalid in C99 [-Wimplicit-function-declaration]`, in such case, you may replace the `typeof` with `__typeof__` and try again.
 
 ## Pro tips
 
