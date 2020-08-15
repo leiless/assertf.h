@@ -38,7 +38,7 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
     When `expr` isn't true, it'll print out a message backed by `fmt` and `...` to `stderr` and then crash the whole program(if `assertf.h` is enabled).
 
     Sample output:
-    ```
+    ```c
     // assertf(e == 0, "unlink(2) errno: %d", errno);
     Assert (e == 0) failed: unlink(2) errno: 2  test.c@main()#12
     [1]    62760 abort (core dumped)  ./test
@@ -56,7 +56,7 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
 
     Check arithmetic relation of `a` and `b`, `fs` is the format specifier of `a`, `b` will use the same format specifier as `a`, double-quote in `"%<type_specifier>"` can be omitted.
 
-    ```
+    ```c
     // assert_eq(e, 0, %d);
     Assert ((e) == (typeof(e)) (0)) failed: lhs: -1 rhs: 0  test.c@main()#13
     [1]    65959 abort (core dumped)  ./test
@@ -66,7 +66,7 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
 
     Like above version, `fmt` and `...` can used for verbose assertion output once it failed.
 
-    ```
+    ```c
     // assert_eqf(e, 0, %d, "unlink(2) errno: %d", errno);
     Assert ((e) == (typeof(e)) (0)) failed: lhs: -1 rhs: 0  unlink(2) errno: 2  test.c@main()#14
     [1]    66800 abort (core dumped)  ./test
@@ -134,7 +134,9 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
 
     - Windows
 
-    **TODO**
+    You need have to check the `pdf`([Program database](https://en.wikipedia.org/wiki/Program_database)) file.
 
     If you see `__assertf0`, it means `assertf.h` is enabled in `some_binary`.
+
+    Note that if you [`strip(1)`](https://man7.org/linux/man-pages/man1/strip.1.html) the symbols, you have no way to determine whether `assertf.h` disabled or not.
 
