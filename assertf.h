@@ -62,11 +62,11 @@
 extern "C" {
 #endif
 #ifdef _WIN32
-extern void __assertf0(int, __printflike(const char *), ...);
+extern void x_assertf_c21162d2(int, __printflike(const char *), ...);
 #else
-extern void __assertf0(int, const char *, ...) __printflike(2, 3);
+extern void x_assertf_c21162d2(int, const char *, ...) __printflike(2, 3);
 #endif
-const char * __basename0(const char *);
+const char * x_bname_dfc95d52(const char *);
 #ifdef __cplusplus
 }
 #endif
@@ -84,9 +84,9 @@ const char * __basename0(const char *);
  * @param ...   Format string arguments
  */
 #ifdef _WIN32
-void __assertf0(int expr, __printflike(const char *fmt), ...)
+void x_assertf_c21162d2(int expr, __printflike(const char *fmt), ...)
 #else
-void __assertf0(int expr, const char *fmt, ...)
+void x_assertf_c21162d2(int expr, const char *fmt, ...)
 #endif
 {
     if (!expr) {
@@ -105,7 +105,7 @@ void __assertf0(int expr, const char *fmt, ...)
  * basename(3) have inconsistent implementation across UNIX-like systems.
  * Besides, Windows doesn't have such API.
  */
-const char * __basename0(const char *path)
+const char * x_bname_dfc95d52(const char *path)
 {
     const char *p;
 #ifdef _WIN32
@@ -123,9 +123,9 @@ const char * __basename0(const char *path)
 #define __FILE0__       __BASE_FILE__
 #endif
 
-#define assertf(e, fmt, ...)                                        \
-    __assertf0(!!(e), "Assert (%s) failed: " fmt "  %s@%s()#%d\n",  \
-                #e, ##__VA_ARGS__, __basename0(__FILE0__), __func__, __LINE__)
+#define assertf(e, fmt, ...)                                                    \
+    x_assertf_c21162d2(!!(e), "Assert (%s) failed: " fmt "  %s@%s()#%d\n",      \
+        #e, ##__VA_ARGS__, x_bname_dfc95d52(__FILE0__), __func__, __LINE__)
 #else
 #ifdef __cplusplus
 extern "C" {

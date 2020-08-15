@@ -1,6 +1,6 @@
-//
-// Created by lei on 8/15/20.
-//
+/*
+ * Created Aug 15, 2020. leiless.
+ */
 
 #include <stdio.h>
 
@@ -9,6 +9,8 @@
 
 int main(void)
 {
-
+    assert_eq(1, 1, %d);
+    assert_null(NULL);
+    assert_nonnull(main);
     return 0;
 }
