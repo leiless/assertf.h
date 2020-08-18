@@ -14,23 +14,6 @@ With enhanced assertions, we can debug/test code better.
 
 `assertf.h` originally targets to embedded systems, it also can be used nearly all UNIX-like, including Windows systems.
 
-## Integration
-
-In order to deploy `assertf.h` to your existing C/C++ project, you need:
-
-1. Download [`assertf.h`](https://raw.githubusercontent.com/leiless/assertf.h/master/assertf.h) to your source code directory
-
-1. In **one** of your C/C++ file(typically project main file), write:
-    ```c
-    // Define ASSERTF_DEF_ONCE once and only once
-    #define ASSERTF_DEF_ONCE
-    #include "assertf.h"
-    ```
-
-1. If other C/C++ files needs to use `assertf.h`, just type `#include "assertf.h"`.
-
-1. If you want to disable `assertf.h` on release build, please specify `-DASSERTF_DISABLE` in `Makefile`, `CMakeLists.txt`, etc.
-
 ## Example
 
 ```c
@@ -52,6 +35,23 @@ int main(void)
 Sample assertion failure output([try it online](https://repl.it/@leiless/assertfh-demo))
 
 ![Samplt output](https://user-images.githubusercontent.com/38041294/90534891-dad15d80-e1ac-11ea-8123-48f4b13bad67.png)
+
+## Integration
+
+In order to deploy `assertf.h` to your existing C/C++ project, you need:
+
+1. Download [`assertf.h`](https://raw.githubusercontent.com/leiless/assertf.h/master/assertf.h) to your source code directory
+
+1. In **one** of your C/C++ file(typically project main file), write:
+    ```c
+    // Define ASSERTF_DEF_ONCE once and only once
+    #define ASSERTF_DEF_ONCE
+    #include "assertf.h"
+    ```
+
+1. If other C/C++ files needs to use `assertf.h`, just type `#include "assertf.h"`.
+
+1. If you want to disable `assertf.h` on release build, please specify `-DASSERTF_DISABLE` in `Makefile`, `CMakeLists.txt`, etc.
 
 ## API
 
