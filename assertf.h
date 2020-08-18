@@ -123,9 +123,33 @@ const char * x_bname_dfc95d52(const char *path)
 #define __FILE0__       __BASE_FILE__
 #endif
 
-#define assertf(e, fmt, ...)                                                    \
-    x_assertf_c21162d2(!!(e), "Assert (%s) failed: " fmt " [%s:%d (%s)]\n",     \
-        #e, ##__VA_ARGS__, x_bname_dfc95d52(__FILE0__), __LINE__, __func__)
+/**
+ * Taken from https://github.com/sharkdp/dbg-macro
+ */
+#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
+#define ASSERTF_IS_UNIX
+#endif
+
+/* see: https://misc.flogisoft.com/bash/tip_colors_and_formatting */
+#define COL_NONE    ""
+#define COL_RST     "\x1b[0m"
+#define COL_RED     "\x1b[91m"
+#define COL_GRAY    "\x1b[02m"
+#define COL_CYAN    "\x1b[36m"
+
+#ifdef ASSERTF_IS_UNIX
+#include <unistd.h>
+#define COL(col)            (isatty(fileno(stderr)) ? (COL_##col) : COL_NONE)
+#else
+/* XXX: Assume it's colorized output */
+#define COL(col)            (col)
+#endif
+
+#define assertf(e, fmt, ...)                                                        \
+    x_assertf_c21162d2(!!(e), "Assert %s(%s)%s failed: " fmt " %s[%s:%d (%s)]%s\n", \
+        COL(RED), #e, COL(RST),                                                     \
+        ##__VA_ARGS__,                                                              \
+        COL(GRAY), x_bname_dfc95d52(__FILE0__), __LINE__, __func__, COL(RST))
 #else
 #ifdef __cplusplus
 extern "C" {
@@ -187,12 +211,15 @@ int __vunused(void *arg, ...)
 #endif
 
 #ifdef _WIN32
-#define __assert_cmp0(a, b, fs, op)                                             \
-    assertf((a) op (b), "lhs: " __xstr(fs) " rhs: " __xstr(fs), (a), (b))
+#define __assert_cmp0(a, b, fs, op)                                                         \
+    assertf((a) op (b), "lhs: %s" __xstr(fs) "%s rhs: %s" __xstr(fs) "%s",                  \
+            COL(CYAN), (a), COL(RST),                                                       \
+            COL(CYAN), (b), COL(RST))
 #else
-#define __assert_cmp0(a, b, fs, op)                                             \
-    assertf((a) op (__type0(a)) (b), "lhs: " __xstr(fs) " rhs: " __xstr(fs),    \
-            (a), (__type0(a)) (b))
+#define __assert_cmp0(a, b, fs, op)                                                         \
+    assertf((a) op (__type0(a)) (b), "lhs: %s" __xstr(fs) "%s rhs: %s" __xstr(fs) "%s",     \
+            COL(CYAN), (a), COL(RST),                                                       \
+            COL(CYAN), (__type0(a)) (b), COL(RST))
 #endif
 
 /**
