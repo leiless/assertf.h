@@ -27,7 +27,8 @@ With enhanced assertions, we can debug/test code better.
 int main(void)
 {
     int e = rmdir("/tmp");
-    assert_eqf(e, 0, %d, "rmdir(2) fail, errno: %d", errno);
+    assert_eqf(e, 0, %d, "rmdir(2) fail, errno: %d", errno);    /* Line 11 */
+    // #define EACCES          13      /* Permission denied */
     return 0;
 }
 ```
