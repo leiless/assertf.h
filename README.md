@@ -31,6 +31,28 @@ In order to deploy `assertf.h` to your existing C/C++ project, you need:
 
 1. If you want to disable `assertf.h` on release build, please specify `-DASSERTF_DISABLE` in `Makefile`, `CMakeLists.txt`, etc.
 
+## Example
+
+```c
+#include <stdio.h>
+#include <unistd.h>
+#include <errno.h>
+
+#define ASSERTF_DEF_ONCE
+#include "assertf.h"
+
+int main(void)
+{
+    int e = rmdir("/tmp");
+    assert_eqf(e, 0, %d, "rmdir(2) fail, errno: %d", errno);
+    return 0;
+}
+```
+
+Sample assertion failure output([try it online](https://repl.it/@leiless/assertfh-demo))
+
+![Samplt output](https://user-images.githubusercontent.com/38041294/90534891-dad15d80-e1ac-11ea-8123-48f4b13bad67.png)
+
 ## API
 
 Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
