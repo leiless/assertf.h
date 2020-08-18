@@ -232,11 +232,16 @@ int __vunused(void *arg, ...)
  */
 #ifdef _WIN32
 #define __assert_cmp1(a, b, fs, op, fmt, ...)                                   \
-    assertf((a) op (b), "lhs: " __xstr(fs) " rhs: " __xstr(fs) "  " fmt, (a), (b), ##__VA_ARGS__)
+    assertf((a) op (b), "lhs: %s" __xstr(fs) "%s rhs: %s" __xstr(fs) "%s " fmt, \
+            COL(CYAN), (a), COL(RST),                                           \
+            COL(CYAN), (b), COL(RST),                                           \
+            ##__VA_ARGS__)
 #else
-#define __assert_cmp1(a, b, fs, op, fmt, ...)                                           \
-    assertf((a) op (__type0(a)) (b), "lhs: " __xstr(fs) " rhs: " __xstr(fs) "  " fmt,   \
-            (a), (__type0(a)) (b), ##__VA_ARGS__)
+#define __assert_cmp1(a, b, fs, op, fmt, ...)                                                   \
+    assertf((a) op (__type0(a)) (b), "lhs: %s" __xstr(fs) "%s rhs: %s" __xstr(fs) "%s " fmt,    \
+            COL(CYAN), (a), COL(RST),                                                           \
+            COL(CYAN), (__type0(a)) (b), COL(RST),                                              \
+            ##__VA_ARGS__)
 #endif
 
 #define assert_eq(a, b, fs)             __assert_cmp0(a, b, fs, ==)
