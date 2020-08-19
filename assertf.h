@@ -138,6 +138,7 @@ const char * x_bname_dfc95d52(const char *path)
 #define COL_CYAN    "\x1b[36m"
 
 #ifdef ASSERTF_IS_UNIX
+#include <stdio.h>
 #include <unistd.h>
 #define COL(col)            (isatty(fileno(stderr)) ? (COL_##col) : COL_NONE)
 #else
