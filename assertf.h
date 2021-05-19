@@ -142,8 +142,8 @@ const char * x_bname_dfc95d52(const char *path)
 #include <unistd.h>
 #define COL(col)            (isatty(fileno(stderr)) ? (COL_##col) : COL_NONE)
 #else
-/* XXX: Assume it's colorized output */
-#define COL(col)            (col)
+/* Eat color strings */
+#define COL(col)            ""
 #endif
 
 #define assertf(e, fmt, ...)                                                        \
@@ -177,7 +177,7 @@ int __vunused(void *arg, ...)
 #endif
 
 /* Fix GitHub #2 implicit declaration of function 'COL' */
-#define COL(col)    (#col)
+#define COL(col)    ""
 
 #include <stdint.h>
 #define assertf(e, fmt, ...)        (void) __vunused((void *) (uintptr_t) (e), fmt, ##__VA_ARGS__)
