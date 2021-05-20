@@ -159,11 +159,10 @@ Nearly all `assertf.h` APIs prefixed with `assert`, the most basic API is the
         0000000000007709 T x_assertf_c21162d2
         ```
 
+        If you see `x_assertf_c21162d2`, it means `assertf.h` is enabled in `some_binary`.
+
+        Note that if you [`strip(1)`](https://man7.org/linux/man-pages/man1/strip.1.html) the symbols, you have no way to determine whether `assertf.h` disabled or not.
+
     - Windows
 
         You need have to check the `pdb`([Program database](https://en.wikipedia.org/wiki/Program_database)) file.
-
-    If you see `x_assertf_c21162d2`, it means `assertf.h` is enabled in `some_binary`.
-
-    Note that if you [`strip(1)`](https://man7.org/linux/man-pages/man1/strip.1.html) the symbols, you have no way to determine whether `assertf.h` disabled or not.
-
