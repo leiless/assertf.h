@@ -274,7 +274,6 @@ int __vunused(void *arg, ...)
 
 #define assert_nonzero                  assert_true
 #define assert_zero                     assert_false
-#define assert_fail(fmt, ...)           assert_truef(0, %d, fmt, ##__VA_ARGS__)
 
 #endif
 
