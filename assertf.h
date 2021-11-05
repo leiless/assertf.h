@@ -267,13 +267,14 @@ int __vunused(void *arg, ...)
 #define assert_gtf(a, b, fs, fmt, ...)  __assert_cmp1(a, b, fs, >, fmt, ##__VA_ARGS__)
 
 #define assert_true(x, fs)              assert_ne(x, 0, fs)
-#define assert_truef(x, fs, fmt, ...)   assert_nef(x, 0, fs, fm, ##__VA_ARGS__)
+#define assert_truef(x, fs, fmt, ...)   assert_nef(x, 0, fs, fmt, ##__VA_ARGS__)
 
 #define assert_false(x, fs)             assert_eq(x, 0, fs)
-#define assert_falsef(x, fs, fmt, ...)  assert_eqf(x, 0, fs, fm, ##__VA_ARGS__)
+#define assert_falsef(x, fs, fmt, ...)  assert_eqf(x, 0, fs, fmt, ##__VA_ARGS__)
 
 #define assert_nonzero                  assert_true
 #define assert_zero                     assert_false
+#define assert_fail(fmt, ...)           assert_truef(0, %d, fmt, ##__VA_ARGS__)
 
 #endif
 
